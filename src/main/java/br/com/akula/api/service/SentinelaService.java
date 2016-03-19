@@ -10,6 +10,10 @@ import br.com.akula.api.model.Usuario;
  * Este servi&ccedil;o &eacute; representa a porta de entrada para as funcionalidades do Componente Sentinela.
  * <p>
  * Atrav&eacute;s dele &eacute; poss&iacute;vel manter permiss&otilde;es e eventos de auditoria.
+ * <p>
+ * <strong>Uso do m&eacute;todo addPermissao()</strong>
+ * <p>
+ * 
  * 
  * @author Rafael de Morais - 19.03.2016
  *

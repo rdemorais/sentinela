@@ -3,6 +3,10 @@ package br.com.akula;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.hsqldb.util.DatabaseManagerSwing;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
 import br.com.akula.api.service.SentinelaService;
+import br.com.akula.model.Registro;
 
 @ContextConfiguration("/META-INF/app-context-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +25,9 @@ public class SentinelaTest {
 
 	@Autowired
 	private SentinelaService sentinelaService;
+	
+	@PersistenceContext
+	protected EntityManager em;
 	
 	private static final String PERMISSAO = "ROLE_VISUALIZAR_LISTA_REUNIAO";
 	private static final String GRUPO = "GRUPO_1";
@@ -41,7 +49,6 @@ public class SentinelaTest {
 		
 		assertEquals("Erro ao alterar o grupo", "GRUPO_2_ALTERADO", gAlt.getIdentificadorUnico());
 		
-		
 		sentinelaService.deleteGrupo(gAlt);
 		
 		Grupo gDel = sentinelaService.findGrupo("GRUPO_2_ALTERADO");
@@ -51,7 +58,8 @@ public class SentinelaTest {
 	
 	
 	@Test
-	public void testSentinelaAll() throws InterruptedException {
+	@Transactional
+	public void testSentinelaPermissaoGrupo() throws InterruptedException {
 		
 		sentinelaService.createPermissao(PERMISSAO, EscopoPermissao.PAGINA);
 		
@@ -61,8 +69,15 @@ public class SentinelaTest {
 		
 		sentinelaService.addPermissao(PERMISSAO, g);
 		
-		//DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:dataSource", "--user", "sa", "--password", "" });
+		Registro reg = new Registro();
+		reg.setNome("reg nome");
+		
+		em.persist(reg);
+		
+		sentinelaService.addPermissao(PERMISSAO, reg, g);
+		
+		DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:dataSource", "--user", "sa", "--password", "" });
 
-		//Thread.sleep(10000);
+		Thread.sleep(10000);
 	}
 }

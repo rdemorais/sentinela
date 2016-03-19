@@ -14,6 +14,7 @@ import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.PermissaoGrupoUsuario;
 import br.com.akula.api.model.Usuario;
 import br.com.akula.api.service.SentinelaService;
+import br.com.akula.impl.model.AbstractEntityPermissao;
 import br.com.akula.impl.model.GrupoImpl;
 import br.com.akula.impl.model.PermissaoGrupoUsuarioImpl;
 import br.com.akula.impl.model.PermissaoImpl;
@@ -95,21 +96,30 @@ public class SentinelaServiceImpl implements SentinelaService {
 	@Transactional
 	public void addPermissao(String perm, Object obj, Grupo grupo, Usuario usuario) throws RuntimeException {
 		try {
+			//TODO checar se obj class extens AbstractEntityPermissao
 			Permissao p = sentinelaDao.findPermissao(perm);
 			String simpleName = obj.getClass().getSimpleName();
-			String prefixo = simpleName.substring(0, simpleName.indexOf("Impl"));
-			String moduloPermissaoClazzName = "br.com.ares.reuniao.model."+prefixo+"PermissaoImpl";
+			String pack = obj.getClass().getPackage().getName();
+			String moduloPermissaoClazzName = pack + "." + simpleName+"Permissao";
 			
 			String setUsuarioMethodName = "setUsuario";
 			String setGrupoMethodName = "setGrupo";
 			String setPermissaoMethodName = "setPermissao";
-			String setModuloPMethodName = "set"+prefixo;
+			String setModuloPMethodName = "set"+simpleName;
 		
 		
 			Class<?> moduloPermissaoClazz = Class.forName(moduloPermissaoClazzName);
 			Object moduloPermissaoInst = moduloPermissaoClazz.newInstance();
 			
-			Field fields[] = moduloPermissaoClazz.getDeclaredFields();
+			Field fieldsEntityPerm[] = AbstractEntityPermissao.class.getDeclaredFields();
+			
+			Field fieldsClazz[] = moduloPermissaoClazz.getDeclaredFields();
+
+			Field fields[] = new Field[fieldsEntityPerm.length + fieldsClazz.length];
+			
+			System.arraycopy(fieldsEntityPerm, 0, fields, 0, fieldsEntityPerm.length);
+			
+			System.arraycopy(fieldsClazz, 0, fields, fieldsEntityPerm.length, fieldsClazz.length);
 			
 			for (Field field : fields) {
 				if(field.getName().equals("usuario")) {
@@ -118,7 +128,7 @@ public class SentinelaServiceImpl implements SentinelaService {
 					moduloPermissaoClazz.getMethod(setGrupoMethodName, field.getType()).invoke(moduloPermissaoInst, grupo);
 				}else if(field.getName().equals("permissao")) {
 					moduloPermissaoClazz.getMethod(setPermissaoMethodName, field.getType()).invoke(moduloPermissaoInst, p);
-				}else if(field.getName().equalsIgnoreCase(prefixo)) {
+				}else if(field.getName().equalsIgnoreCase(simpleName)) {
 					moduloPermissaoClazz.getMethod(setModuloPMethodName, field.getType()).invoke(moduloPermissaoInst, obj);
 				}
 			}

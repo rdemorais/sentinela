@@ -12,9 +12,12 @@
         <class>br.com.akula.impl.model.PermissaoGrupoUsuarioImpl</class>
         <class>br.com.akula.impl.model.PermissaoImpl</class>
         <class>br.com.akula.impl.model.UsuarioImpl</class>
+        
+        <class>br.com.akula.model.Registro</class>
+        <class>br.com.akula.model.RegistroPermissao</class>
         <exclude-unlisted-classes/>
          
-        <properties><!-- c3f710445efccb3ec4fcb319297e7cb1 -->
+        <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
     		<property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.show_sql" value="false" />
