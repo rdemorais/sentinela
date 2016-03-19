@@ -1,5 +1,8 @@
 package br.com.akula.api.service;
 
+import java.io.Serializable;
+
+import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
 import br.com.akula.api.model.Usuario;
 
@@ -12,6 +15,52 @@ import br.com.akula.api.model.Usuario;
  *
  */
 public interface SentinelaService {
+	
+	
+	/**
+	 * Cria um novo grupo
+	 * 
+	 * @param nome
+	 * @param identificadorUnico
+	 * @param administracao
+	 * @throws RuntimeException
+	 */
+	public void createGrupo(String nome, String identificadorUnico, Boolean administracao) throws RuntimeException;
+	
+	/**
+	 * Atualiza um grupo
+	 * 
+	 * @param nome
+	 * @param identificadorUnico
+	 * @param administracao
+	 * @throws RuntimeException
+	 */
+	public void updateGrupo(Grupo g) throws RuntimeException;
+	
+	/**
+	 * Apaga um grupo da base
+	 * @param pk
+	 * @throws RuntimeException
+	 */
+	public void deleteGrupo(Grupo g) throws RuntimeException;
+	
+	/**
+	 * Encontra um {@link Grupo} a partir do identificador
+	 * 
+	 * @param identificadorUnico
+	 * @return
+	 * @throws RuntimeException
+	 */
+	public Grupo findGrupo(String identificadorUnico) throws RuntimeException;
+	
+	/**
+	 * Cria uma nova permiss&atilde;o
+	 * 
+	 * @param perm
+	 * @param escopo
+	 * @throws RuntimeException
+	 */
+	public void createPermissao(String perm, EscopoPermissao escopo) throws RuntimeException;
 	
 	/**
 	 * Vincula uma permiss&atilde;o j&aacute; cadastrada a um {@link Usuario} ou {@link Grupo}
@@ -59,4 +108,13 @@ public interface SentinelaService {
 	 * @throws RuntimeException
 	 */
 	public void addPermissao(String perm, Object obj, Usuario usuario) throws RuntimeException;
+	
+	/**
+	 * Localiza uma entidade no banco.
+	 * 
+	 * @param c
+	 * @param pk
+	 * @throws RuntimeException
+	 */
+	public <T> T findEntity(Class<T> c, Serializable pk) throws RuntimeException;
 }

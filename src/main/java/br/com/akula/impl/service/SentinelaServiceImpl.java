@@ -1,5 +1,6 @@
 package br.com.akula.impl.service;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.akula.api.dao.SentinelaDao;
+import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
 import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.PermissaoGrupoUsuario;
@@ -14,12 +16,59 @@ import br.com.akula.api.model.Usuario;
 import br.com.akula.api.service.SentinelaService;
 import br.com.akula.impl.model.GrupoImpl;
 import br.com.akula.impl.model.PermissaoGrupoUsuarioImpl;
+import br.com.akula.impl.model.PermissaoImpl;
 import br.com.akula.impl.model.UsuarioImpl;
 
 public class SentinelaServiceImpl implements SentinelaService {
 
 	@Autowired
-	private SentinelaDao sentinelaDao; 
+	private SentinelaDao sentinelaDao;
+	
+	
+	@Override
+	@Transactional
+	public <T> T findEntity(Class<T> c, Serializable pk) throws RuntimeException {
+		return sentinelaDao.find(c, pk);
+	}
+	
+	@Override
+	@Transactional
+	public void createGrupo(String nome, String identificadorUnico, Boolean administracao) throws RuntimeException {
+		Grupo g = new GrupoImpl();
+		
+		g.setNome(identificadorUnico);
+		g.setIdentificadorUnico(identificadorUnico);
+		g.setAdministracao(administracao);
+		
+		sentinelaDao.merge(g);
+	}
+	
+	@Override
+	@Transactional
+	public void updateGrupo(Grupo g) throws RuntimeException {
+		sentinelaDao.merge(g);
+	}
+	
+	@Override
+	@Transactional
+	public void deleteGrupo(Grupo g) throws RuntimeException {
+		sentinelaDao.delete(g);
+	}
+	
+	@Override
+	public Grupo findGrupo(String identificadorUnico) throws RuntimeException {
+		return sentinelaDao.findGrupo(identificadorUnico);
+	}
+	
+	@Override
+	@Transactional
+	public void createPermissao(String perm, EscopoPermissao escopo) throws RuntimeException {
+		Permissao p = new PermissaoImpl();
+		p.setNome(perm);
+		p.setEscopo(escopo);
+		
+		sentinelaDao.merge(p);
+	}
 	
 	@Override
 	@Transactional

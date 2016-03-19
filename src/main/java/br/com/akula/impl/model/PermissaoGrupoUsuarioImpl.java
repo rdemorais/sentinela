@@ -34,7 +34,7 @@ public class PermissaoGrupoUsuarioImpl implements PermissaoGrupoUsuario {
 	@JoinColumn(name="co_grupo")
 	private Grupo grupo;
 	
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=PermissaoImpl.class, cascade=CascadeType.REFRESH)
+	@ManyToOne(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY, targetEntity=PermissaoImpl.class)
 	@JoinColumn(name = "co_permissao", referencedColumnName = "co_permissao")
 	private Permissao permissao;
 	

@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.QueryTimeoutException;
 
 import br.com.akula.api.dao.SentinelaDao;
+import br.com.akula.api.model.Grupo;
 import br.com.akula.api.model.Permissao;
 
 public class SentinelaDaoImpl implements SentinelaDao{
@@ -22,6 +23,11 @@ public class SentinelaDaoImpl implements SentinelaDao{
 		Object merged = em.merge(o);
 		em.flush();
 		return merged;
+	}
+	
+	@Override
+	public void delete(Object o) throws RuntimeException {
+		em.remove(o);
 	}
 
 	@Override
@@ -45,6 +51,21 @@ public class SentinelaDaoImpl implements SentinelaDao{
 			Query q = em.createQuery("FROM Permissao p WHERE p.nome = :nome");
 			q.setParameter("nome", perm);
 			return (Permissao) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (NonUniqueResultException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public Grupo findGrupo(String identificadorUnico) throws RuntimeException {
+		try {
+			Query q = em.createQuery("FROM Grupo g WHERE g.identificadorUnico = :idU");
+			q.setParameter("idU", identificadorUnico);
+			return (Grupo) q.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		} catch (NonUniqueResultException e) {
