@@ -1,0 +1,56 @@
+package br.com.akula.impl.dao;
+
+import java.io.Serializable;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.QueryTimeoutException;
+
+import br.com.akula.api.dao.SentinelaDao;
+import br.com.akula.api.model.Permissao;
+
+public class SentinelaDaoImpl implements SentinelaDao{
+
+	@PersistenceContext
+	protected EntityManager em;
+	
+	@Override
+	public Object merge(Object o) throws RuntimeException {
+		Object merged = em.merge(o);
+		em.flush();
+		return merged;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T find(Class<T> c, Serializable pk) throws RuntimeException {
+		try {
+			String nomeClass = c.getCanonicalName();
+			nomeClass += "Impl";
+			return (T) em.find(Class.forName(nomeClass), pk);
+		} catch (ClassNotFoundException e) {
+			//TODO Informar que o prefixo da classe concreta deve ser "Impl" e o pacote deve ser o mesmo que a interface
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	public Permissao findPermissao(String perm) throws RuntimeException {
+		try {
+			Query q = em.createQuery("FROM Permissao p WHERE p.nome = :nome");
+			q.setParameter("nome", perm);
+			return (Permissao) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (NonUniqueResultException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+}
