@@ -13,9 +13,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.akula.api.auditoria.SentinelaAuditoriaEventPublisher;
 import br.com.akula.api.model.EscopoPermissao;
+import br.com.akula.api.model.EventoAuditoria;
 import br.com.akula.api.model.Grupo;
+import br.com.akula.api.model.Usuario;
 import br.com.akula.api.service.SentinelaService;
+import br.com.akula.impl.model.UsuarioImpl;
 import br.com.akula.model.Registro;
 
 @ContextConfiguration("/META-INF/app-context-test.xml")
@@ -24,6 +28,9 @@ public class SentinelaTest {
 
 	@Autowired
 	private SentinelaService sentinelaService;
+	
+	@Autowired
+	private SentinelaAuditoriaEventPublisher sentinelaAuditoria;
 	
 	@PersistenceContext
 	protected EntityManager em;
@@ -79,8 +86,22 @@ public class SentinelaTest {
 		
 		assertEquals("Erro. Grupo nao possui a permissao", true, inPerm);
 		
-		//DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:dataSource", "--user", "sa", "--password", "" });
-
-		//Thread.sleep(10000);
+	}
+	
+	@Test
+	@Transactional
+	public void testSentinelaAuditoria() throws InterruptedException {
+		Usuario user = new UsuarioImpl();
+		user.setLogin("rdemorais");
+		
+		em.persist(user);
+		
+		Registro reg = new Registro();
+		reg.setNome("reg nome");
+		
+		em.persist(reg);
+		
+		sentinelaAuditoria.notificar(user, reg, EventoAuditoria.INSERT);
+		
 	}
 }

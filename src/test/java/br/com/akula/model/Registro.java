@@ -7,9 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import br.com.akula.impl.model.AbstractAuditavel;
+
 @Entity(name="Registro")
 @Table(name="tb_registro_test")
-public class Registro {
+public class Registro extends AbstractAuditavel{
 	
 	@Id
 	@SequenceGenerator(name="Sentinela_SeqGen", sequenceName="sentinela_registro_seq")

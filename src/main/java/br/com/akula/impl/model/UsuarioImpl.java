@@ -20,7 +20,9 @@ import br.com.akula.api.model.Usuario;
 
 @Entity(name="Usuario")
 @Table(name="tb_usuario_seg")
-public class UsuarioImpl implements Usuario {
+public class UsuarioImpl implements Usuario{
+
+	private static final long serialVersionUID = 2851113105250927406L;
 
 	@Id
 	@SequenceGenerator(name="Sentinela_SeqGen", sequenceName="sentinela_usuario_seq")

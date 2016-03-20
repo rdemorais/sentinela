@@ -1,5 +1,6 @@
 package br.com.akula.api.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Collection;
  * @author Rafael de Morais
  *
  */
-public interface Usuario {
+public interface Usuario extends Serializable{
 	public Long getId();
 	public void setId(Long id);
 	public String getLogin();
