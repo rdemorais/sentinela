@@ -18,7 +18,7 @@ public interface Pagina {
 	/**
 	 * Informa se o link deve ser apresentado na barra de navegação
 	 * REGRA: A página não pode ser filha de outra, portanto PaginaPai = null
-	 * @return
+	 * 
 	 */
 	public Boolean isLinkBarra();
 	public void setLinkBarra(Boolean linkBarra);
