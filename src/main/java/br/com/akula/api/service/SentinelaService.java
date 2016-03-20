@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
+import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.Usuario;
 
 /**
@@ -65,6 +66,17 @@ public interface SentinelaService {
 	 * @throws RuntimeException
 	 */
 	public void createPermissao(String perm, EscopoPermissao escopo) throws RuntimeException;
+	
+	/**
+	 * Verifica se um {@link Grupo} ou {@link Usuario} possui uma determinada {@link Permissao} no objeto
+	 * 
+	 * @param obj inst&acirc;ncia na qual se deseja verificar a {@link Permissao}
+	 * @param perm
+	 * @param usuGrupo
+	 * @return
+	 * @throws RuntimeException
+	 */
+	public boolean checkPerm(Object obj, String perm, Object usuGrupo) throws RuntimeException;
 	
 	/**
 	 * Vincula uma permiss&atilde;o j&aacute; cadastrada a um {@link Usuario} ou {@link Grupo}

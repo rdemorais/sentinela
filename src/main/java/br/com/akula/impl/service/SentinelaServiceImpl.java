@@ -72,6 +72,35 @@ public class SentinelaServiceImpl implements SentinelaService {
 	}
 	
 	@Override
+	public boolean checkPerm(Object obj, String perm, Object usuGrupo) throws RuntimeException {
+		try {
+			Usuario usuario = null;
+			Grupo grupo = null;
+			Permissao p = sentinelaDao.findPermissao(perm);
+			
+			if(usuGrupo instanceof UsuarioImpl) {
+				usuario = (Usuario) usuGrupo;
+			}else if(usuGrupo instanceof GrupoImpl) {
+				grupo = (Grupo) usuGrupo;
+			}
+			
+			Class<?> classPerm = discoveryClassPermName(obj);
+			Object entityPerm = null;
+			
+			if(usuario != null) {
+				
+			}else if(grupo != null) {
+				entityPerm = sentinelaDao.findEntityPermissao(classPerm.getSimpleName(), grupo, p);
+				
+			}
+			
+			return entityPerm == null ? false : true;
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Override
 	@Transactional
 	public void addPermissao(String perm, Object usuGrupo) throws RuntimeException {
 		Usuario usuario = null;
@@ -99,8 +128,6 @@ public class SentinelaServiceImpl implements SentinelaService {
 			//TODO checar se obj class extens AbstractEntityPermissao
 			Permissao p = sentinelaDao.findPermissao(perm);
 			String simpleName = obj.getClass().getSimpleName();
-			String pack = obj.getClass().getPackage().getName();
-			String moduloPermissaoClazzName = pack + "." + simpleName+"Permissao";
 			
 			String setUsuarioMethodName = "setUsuario";
 			String setGrupoMethodName = "setGrupo";
@@ -108,7 +135,7 @@ public class SentinelaServiceImpl implements SentinelaService {
 			String setModuloPMethodName = "set"+simpleName;
 		
 		
-			Class<?> moduloPermissaoClazz = Class.forName(moduloPermissaoClazzName);
+			Class<?> moduloPermissaoClazz = discoveryClassPermName(obj);
 			Object moduloPermissaoInst = moduloPermissaoClazz.newInstance();
 			
 			Field fieldsEntityPerm[] = AbstractEntityPermissao.class.getDeclaredFields();
@@ -162,5 +189,13 @@ public class SentinelaServiceImpl implements SentinelaService {
 	@Transactional
 	public void addPermissao(String perm, Object obj, Usuario usuario) throws RuntimeException {
 		addPermissao(perm, obj, null, usuario);
+	}
+	
+	private Class<?> discoveryClassPermName(Object obj) throws ClassNotFoundException {
+		String simpleName = obj.getClass().getSimpleName();
+		String pack = obj.getClass().getPackage().getName();
+		String moduloPermissaoClazzName = pack + "." + simpleName+"Permissao";
+		
+		return Class.forName(moduloPermissaoClazzName);
 	}
 }

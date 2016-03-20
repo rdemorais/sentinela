@@ -12,6 +12,7 @@ import javax.persistence.QueryTimeoutException;
 import br.com.akula.api.dao.SentinelaDao;
 import br.com.akula.api.model.Grupo;
 import br.com.akula.api.model.Permissao;
+import br.com.akula.api.model.Usuario;
 
 public class SentinelaDaoImpl implements SentinelaDao{
 
@@ -66,6 +67,40 @@ public class SentinelaDaoImpl implements SentinelaDao{
 			Query q = em.createQuery("FROM Grupo g WHERE g.identificadorUnico = :idU");
 			q.setParameter("idU", identificadorUnico);
 			return (Grupo) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (NonUniqueResultException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T findEntityPermissao(String entityName, Grupo g, Permissao perm) throws RuntimeException {
+		try {
+			Query q = em.createQuery("FROM "+entityName+" ent WHERE ent.grupo = :gru AND ent.permissao = :perm");
+			q.setParameter("gru", g);
+			q.setParameter("perm", perm);
+			return (T) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (NonUniqueResultException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T findEntityPermissao(String entityName, Usuario u, Permissao perm) throws RuntimeException {
+		try {
+			Query q = em.createQuery("FROM "+entityName+" ent WHERE ent.usuario = :usu AND ent.permissao = :perm");
+			q.setParameter("usu", u);
+			q.setParameter("perm", perm);
+			return (T) q.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		} catch (NonUniqueResultException e) {

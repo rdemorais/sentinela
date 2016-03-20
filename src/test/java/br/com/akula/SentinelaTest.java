@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hsqldb.util.DatabaseManagerSwing;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +75,12 @@ public class SentinelaTest {
 		
 		sentinelaService.addPermissao(PERMISSAO, reg, g);
 		
-		DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:dataSource", "--user", "sa", "--password", "" });
+		boolean inPerm = sentinelaService.checkPerm(reg, PERMISSAO, g);
+		
+		assertEquals("Erro. Grupo nao possui a permissao", true, inPerm);
+		
+		//DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:dataSource", "--user", "sa", "--password", "" });
 
-		Thread.sleep(10000);
+		//Thread.sleep(10000);
 	}
 }

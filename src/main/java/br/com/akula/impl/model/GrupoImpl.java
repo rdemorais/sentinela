@@ -59,5 +59,35 @@ public class GrupoImpl implements Grupo{
 	public void setAdministracao(Boolean administracao) {
 		this.administracao = administracao;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((identificadorUnico == null) ? 0 : identificadorUnico.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GrupoImpl other = (GrupoImpl) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (identificadorUnico == null) {
+			if (other.identificadorUnico != null)
+				return false;
+		} else if (!identificadorUnico.equals(other.identificadorUnico))
+			return false;
+		return true;
+	}
 }
