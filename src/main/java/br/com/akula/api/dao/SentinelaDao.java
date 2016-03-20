@@ -14,4 +14,5 @@ public interface SentinelaDao {
 	public Grupo findGrupo(String identificadorUnico) throws RuntimeException;
 	public <T> T findEntityPermissao(String entityName, Grupo g, Permissao perm) throws RuntimeException;
 	public <T> T findEntityPermissao(String entityName, Usuario u, Permissao perm) throws RuntimeException;
+	public Usuario findUsuario(String login) throws RuntimeException;
 }

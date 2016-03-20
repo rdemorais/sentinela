@@ -109,4 +109,19 @@ public class SentinelaDaoImpl implements SentinelaDao{
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
+	
+	@Override
+	public Usuario findUsuario(String login) throws RuntimeException {
+		try {
+			Query q = em.createQuery("FROM Usuario u WHERE u.login = :l");
+			q.setParameter("l", login);
+			return (Usuario) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (NonUniqueResultException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 }
