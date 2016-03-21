@@ -21,7 +21,7 @@ import br.com.akula.api.model.Usuario;
 
 /**
  * Classe utilit&aacute;ria para {@link AuthenticationProvider}. Suporta auth do tipo username e password.
- * </br>
+ * <br>
  * Inclui no conjunto de {@link Permissao} a ROLE_AUTENTICADO
  * 
  * @author Rafael de Morais

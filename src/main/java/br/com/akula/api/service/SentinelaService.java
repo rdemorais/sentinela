@@ -10,15 +10,15 @@ import br.com.akula.impl.model.AbstractEntityPermissao;
 
 /**
  * Este servi&ccedil;o &eacute; representa a porta de entrada para as funcionalidades do Componente Sentinela.
- * <p></p>
+ * <br>
  * Atrav&eacute;s dele &eacute; poss&iacute;vel manter permiss&otilde;es e eventos de auditoria.
- * <p></p>
+ * <br>
  * <strong>Uso do m&eacute;todo addPermissao()</strong>
- * <p></p>
+ * <br>
  * Para alcan&ccedil;ar o potencial deste componente, o desenvolvedor deve considerar as seguintes premissas:
- * <p></p>
+ * <br>
  * Assuma para este exemplo que a classe a qual se quer dar as pemiss&otilde;es chama-se <i>Registro</i>
- * <p></p>
+ * <br>
  * <ul>
  * <li>Deve-se criar uma classe no mesmo pacote chamada RegistroPermissao</li>
  * <li>RegistroPermissao deve extender {@link AbstractEntityPermissao}</li>
@@ -96,10 +96,10 @@ public interface SentinelaService {
 	
 	/**
 	 * Vincula uma permiss&atilde;o existente a um objeto do tipo [MODULO]Permissao.
-	 * <p></p>
+	 * <br>
 	 * 
-	 * Ex.:<p></p>
-	 * <p></p>
+	 * Ex.:<br>
+	 * <br>
 	 * Considerando que o sistema cliente possua uma classe chamada Encaminhamento. &Eacute; poss&eacute;vel 
 	 * criar uma nova classe do tipo EncaminhamentoPermissao e vincular a ela uma nova permiss&atilde;o, no n&iacute;vel do registro,
 	 * a um {@link Usuario} ou {@link Grupo}.
@@ -135,6 +135,7 @@ public interface SentinelaService {
 	/**
 	 * Localiza uma entidade no banco.
 	 * 
+	 * @param <T> tipo
 	 * @param c a classe a cujo objeto ser&aacute; localizado
 	 * @param pk a chave prim&aacute;ria
 	 * @throws RuntimeException se algo der errado...
