@@ -208,7 +208,7 @@ public class SentinelaServiceImpl implements SentinelaService {
 	
 	@Override
 	public boolean necessitaAlterarSenha() throws RuntimeException {
-		Usuario user = sentinelaDao.find(Usuario.class, usuarioLogadoId());
+		Usuario user = sentinelaDao.find(UsuarioImpl.class, usuarioLogadoId());
 		return user.getSenhaAlterada();
 	}
 	
