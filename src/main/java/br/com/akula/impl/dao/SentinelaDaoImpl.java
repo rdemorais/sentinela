@@ -1,6 +1,7 @@
 package br.com.akula.impl.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -11,6 +12,7 @@ import javax.persistence.QueryTimeoutException;
 
 import br.com.akula.api.dao.SentinelaDao;
 import br.com.akula.api.model.Grupo;
+import br.com.akula.api.model.Pagina;
 import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.Usuario;
 
@@ -121,6 +123,63 @@ public class SentinelaDaoImpl implements SentinelaDao{
 		} catch (NonUniqueResultException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Permissao> listPermissaoUsuario(Serializable id) throws RuntimeException {
+		try{
+			Query q = em.createQuery("SELECT perm.permissao FROM PermissaoGrupoUsuario perm WHERE "
+					+ "perm.usuario.id = :idUser "
+					+ "OR perm.grupo.id IN (SELECT ug.grupo.id FROM UsuarioGrupo ug WHERE ug.usuario.id = :idUser)");
+			q.setParameter("idUser", id);
+			return q.getResultList();
+		}catch (RuntimeException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Pagina> listPaginas(Serializable idUser, Pagina paginaPai, boolean paginaPadrao)
+			throws RuntimeException {
+		try {
+			StringBuffer queryStr = new StringBuffer();
+			queryStr.append("SELECT distinct pag FROM Pagina pag ");
+			if(idUser != null) {
+				queryStr.append("INNER JOIN pag.permissoes perm ");
+			}
+			queryStr.append("WHERE ");
+			if(idUser != null) {
+				queryStr.append("perm.id IN (SELECT per.permissao.id FROM PermissaoGrupoUsuario per  ");
+				queryStr.append("WHERE per.usuario.id = :idUser ");
+				queryStr.append("OR per.grupo.id IN (SELECT ug.grupo.id FROM UsuarioGrupo ug WHERE ug.usuario.id = :idUser)");
+				queryStr.append(")");
+				queryStr.append(" AND ");
+			}
+			
+			if(paginaPai != null) {
+				queryStr.append("pag.paginaPai = :pai ");
+			}else {
+				if(paginaPadrao) {
+					queryStr.append("pag.podeSerPaginaPadrao = TRUE ");
+				}else {
+					queryStr.append("pag.linkBarra = TRUE ");	
+				}
+			}
+			
+			queryStr.append("ORDER BY pag.ordem");
+			Query q = em.createQuery(queryStr.toString());
+			if(idUser != null) {
+				q.setParameter("idUser", idUser);
+			}
+			if(paginaPai != null) {
+				q.setParameter("pai", paginaPai);
+			}
+			return q.getResultList();
+		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}

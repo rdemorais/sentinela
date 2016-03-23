@@ -1,8 +1,10 @@
 package br.com.akula.api.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import br.com.akula.api.model.Grupo;
+import br.com.akula.api.model.Pagina;
 import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.Usuario;
 
@@ -15,4 +17,6 @@ public interface SentinelaDao {
 	public <T> T findEntityPermissao(String entityName, Grupo g, Permissao perm) throws RuntimeException;
 	public <T> T findEntityPermissao(String entityName, Usuario u, Permissao perm) throws RuntimeException;
 	public Usuario findUsuario(String login) throws RuntimeException;
+	public List<Permissao> listPermissaoUsuario(Serializable id) throws RuntimeException;
+	public List<Pagina> listPaginas(Serializable idUser, Pagina paginaPai, boolean paginaPadrao) throws RuntimeException;
 }

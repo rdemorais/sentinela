@@ -171,5 +171,10 @@ public interface SentinelaService {
 	 */
 	public Serializable usuarioLogadoId() throws RuntimeException;
 	
+	/**
+	 * Retorna a lista de {@link NavBarItem} do {@link Usuario} logado
+	 * @return a lista {@link NavBarItem}
+	 * @throws RuntimeException ...
+	 */
 	public List<NavBarItem> usuarioNavBar() throws RuntimeException;
 }
