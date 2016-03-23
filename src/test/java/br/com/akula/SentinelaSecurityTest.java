@@ -46,6 +46,7 @@ public class SentinelaSecurityTest {
 		mockMvc.perform(post("/j_spring_security_check").param("j_username", "bill").param("j_password", "abc123"))
 				.andExpect(new ResultMatcher() {
 					public void match(MvcResult mvcResult) throws Exception {
+						logger.debug("testSentinelaAuthenticationProvider ok...");
 					}
 				});
 	}

@@ -41,6 +41,7 @@ public class SentinelaTest {
 	@Test
 	@Transactional
 	public void testSentinelaCrud() {
+		
 		sentinelaService.createGrupo("Grupo 2", "GRUPO_2", true);
 		
 		Grupo g = sentinelaService.findGrupo("GRUPO_2");

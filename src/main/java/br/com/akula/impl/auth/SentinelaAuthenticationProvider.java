@@ -38,6 +38,7 @@ public class SentinelaAuthenticationProvider implements AuthenticationProvider{
 	
 	@Override
 	public Authentication authenticate(Authentication auth) throws AuthenticationException {
+		logger.debug("Iniciando autenticacao para usuario");
 		try {
 			String login = String.valueOf(auth.getPrincipal());
 			String senha = String.valueOf(auth.getCredentials());

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
+import br.com.akula.api.model.Pagina;
 import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.Usuario;
 import br.com.akula.impl.model.AbstractEntityPermissao;
@@ -142,4 +143,12 @@ public interface SentinelaService {
 	 * @return retorna o objeto ou null
 	 */
 	public <T> T findEntity(Class<T> c, Serializable pk) throws RuntimeException;
+	
+	/**
+	 * Retorna a p&aacute;gina padr&atilde;o configurada para o {@link Usuario}
+	 * 
+	 * @return a {@link Pagina} em string
+	 * @throws RuntimeException se algo der errado...
+	 */
+	public String usuarioPaginaPadrao() throws RuntimeException;
 }

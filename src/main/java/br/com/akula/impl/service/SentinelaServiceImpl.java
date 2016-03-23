@@ -3,10 +3,14 @@ package br.com.akula.impl.service;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.akula.api.ca.UserDetails;
 import br.com.akula.api.dao.SentinelaDao;
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
@@ -197,5 +201,14 @@ public class SentinelaServiceImpl implements SentinelaService {
 		String moduloPermissaoClazzName = pack + "." + simpleName+"Permissao";
 		
 		return Class.forName(moduloPermissaoClazzName);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public String usuarioPaginaPadrao() throws RuntimeException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Map<UserDetails, Object> userDet = (Map<UserDetails, Object>) auth.getDetails();
+		String paginaPadrao = (String)userDet.get(UserDetails.PAGINA_PADRAO);
+		return paginaPadrao;
 	}
 }
