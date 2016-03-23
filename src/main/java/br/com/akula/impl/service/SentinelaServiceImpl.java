@@ -3,6 +3,7 @@ package br.com.akula.impl.service;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.akula.api.ca.NavBarItem;
 import br.com.akula.api.ca.UserDetails;
 import br.com.akula.api.dao.SentinelaDao;
 import br.com.akula.api.model.EscopoPermissao;
@@ -195,14 +197,6 @@ public class SentinelaServiceImpl implements SentinelaService {
 		addPermissao(perm, obj, null, usuario);
 	}
 	
-	private Class<?> discoveryClassPermName(Object obj) throws ClassNotFoundException {
-		String simpleName = obj.getClass().getSimpleName();
-		String pack = obj.getClass().getPackage().getName();
-		String moduloPermissaoClazzName = pack + "." + simpleName+"Permissao";
-		
-		return Class.forName(moduloPermissaoClazzName);
-	}
-	
 	@Override
 	@SuppressWarnings("unchecked")
 	public String usuarioPaginaPadrao() throws RuntimeException {
@@ -210,5 +204,36 @@ public class SentinelaServiceImpl implements SentinelaService {
 		Map<UserDetails, Object> userDet = (Map<UserDetails, Object>) auth.getDetails();
 		String paginaPadrao = (String)userDet.get(UserDetails.PAGINA_PADRAO);
 		return paginaPadrao;
+	}
+	
+	@Override
+	public boolean necessitaAlterarSenha() throws RuntimeException {
+		Usuario user = sentinelaDao.find(Usuario.class, usuarioLogadoId());
+		return user.getSenhaAlterada();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public Serializable usuarioLogadoId() throws RuntimeException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Map<UserDetails, Object> userDet = (Map<UserDetails, Object>) auth.getDetails();
+		return (Serializable) userDet.get(UserDetails.ID_USER);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<NavBarItem> usuarioNavBar() throws RuntimeException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Map<UserDetails, Object> userDet = (Map<UserDetails, Object>) auth.getDetails();
+		
+		return (List<NavBarItem>) userDet.get(UserDetails.NAVBAR);
+	}
+	
+	private Class<?> discoveryClassPermName(Object obj) throws ClassNotFoundException {
+		String simpleName = obj.getClass().getSimpleName();
+		String pack = obj.getClass().getPackage().getName();
+		String moduloPermissaoClazzName = pack + "." + simpleName+"Permissao";
+		
+		return Class.forName(moduloPermissaoClazzName);
 	}
 }

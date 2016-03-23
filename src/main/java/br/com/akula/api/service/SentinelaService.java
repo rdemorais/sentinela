@@ -1,7 +1,9 @@
 package br.com.akula.api.service;
 
 import java.io.Serializable;
+import java.util.List;
 
+import br.com.akula.api.ca.NavBarItem;
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
 import br.com.akula.api.model.Pagina;
@@ -151,4 +153,23 @@ public interface SentinelaService {
 	 * @throws RuntimeException se algo der errado...
 	 */
 	public String usuarioPaginaPadrao() throws RuntimeException;
+	
+	/**
+	 * Verifica se o {@link Usuario} precisa alterar a senha. Normalmente acontece quando uma nova 
+	 * senha &eacute; gerada pelo sistema
+	 * 
+	 * @return true se h&aacute; necessidade alterar a senha
+	 * @throws RuntimeException se algo der errado...
+	 */
+	public boolean necessitaAlterarSenha() throws RuntimeException;
+	
+	/**
+	 * Retorna o ID (chave) do {@link Usuario} logado
+	 * 
+	 * @return a chave primaria que identifica o {@link Usuario}
+	 * @throws RuntimeException se algo der errado...
+	 */
+	public Serializable usuarioLogadoId() throws RuntimeException;
+	
+	public List<NavBarItem> usuarioNavBar() throws RuntimeException;
 }
