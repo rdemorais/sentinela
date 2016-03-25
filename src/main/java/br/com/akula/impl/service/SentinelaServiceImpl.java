@@ -40,7 +40,7 @@ public class SentinelaServiceImpl implements SentinelaService {
 	
 	@Override
 	@Transactional
-	public void createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException {
+	public Usuario createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException {
 		Usuario user = new UsuarioImpl();
 		
 		Grupo g = sentinelaDao.findGrupo(grupo);
@@ -60,6 +60,8 @@ public class SentinelaServiceImpl implements SentinelaService {
 		userGrupo.setGrupo(g);
 		
 		sentinelaDao.create(userGrupo);
+		
+		return user;
 	}
 	
 	@Override

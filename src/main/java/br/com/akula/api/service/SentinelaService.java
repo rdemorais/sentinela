@@ -43,7 +43,7 @@ public interface SentinelaService {
 	 * @param pagina A {@link Pagina}. Identificador unico
 	 * @throws RuntimeException ...
 	 */
-	public void createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException;
+	public Usuario createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException;
 	
 	/**
 	 * Cria um novo grupo

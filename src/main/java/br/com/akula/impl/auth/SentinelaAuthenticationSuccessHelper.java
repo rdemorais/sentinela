@@ -26,7 +26,7 @@ public abstract class SentinelaAuthenticationSuccessHelper {
 	private static final Logger logger = LoggerFactory.getLogger(SentinelaAuthenticationSuccessHelper.class);
 	
 	@Autowired
-	private SentinelaDao sentinelaDao;
+	protected SentinelaDao sentinelaDao;
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
