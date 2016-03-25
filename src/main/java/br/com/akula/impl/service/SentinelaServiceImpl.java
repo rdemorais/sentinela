@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.akula.api.ca.NavBarItem;
@@ -16,14 +18,17 @@ import br.com.akula.api.ca.UserDetails;
 import br.com.akula.api.dao.SentinelaDao;
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
+import br.com.akula.api.model.Pagina;
 import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.PermissaoGrupoUsuario;
 import br.com.akula.api.model.Usuario;
+import br.com.akula.api.model.UsuarioGrupo;
 import br.com.akula.api.service.SentinelaService;
 import br.com.akula.impl.model.AbstractEntityPermissao;
 import br.com.akula.impl.model.GrupoImpl;
 import br.com.akula.impl.model.PermissaoGrupoUsuarioImpl;
 import br.com.akula.impl.model.PermissaoImpl;
+import br.com.akula.impl.model.UsuarioGrupoImpl;
 import br.com.akula.impl.model.UsuarioImpl;
 
 public class SentinelaServiceImpl implements SentinelaService {
@@ -31,6 +36,31 @@ public class SentinelaServiceImpl implements SentinelaService {
 	@Autowired
 	private SentinelaDao sentinelaDao;
 	
+	private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+	
+	@Override
+	@Transactional
+	public void createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException {
+		Usuario user = new UsuarioImpl();
+		
+		Grupo g = sentinelaDao.findGrupo(grupo);
+		Pagina p = sentinelaDao.findPagina(pagina);
+		
+		user.setAtivo(Boolean.TRUE);
+		user.setAutoRegistro(Boolean.TRUE);
+		user.setLogin(login);
+		user.setSenhaAlterada(Boolean.FALSE);
+		user.setSenha(encoder.encode(senha));
+		user.setPaginaPadrao(p);
+		
+		sentinelaDao.create(user);
+		
+		UsuarioGrupo userGrupo = new UsuarioGrupoImpl();
+		userGrupo.setUsuario(user);
+		userGrupo.setGrupo(g);
+		
+		sentinelaDao.create(userGrupo);
+	}
 	
 	@Override
 	@Transactional

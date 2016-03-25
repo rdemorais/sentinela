@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.QueryTimeoutException;
 
@@ -20,6 +21,16 @@ public class SentinelaDaoImpl implements SentinelaDao{
 
 	@PersistenceContext
 	protected EntityManager em;
+	
+	@Override
+	public void create(Object o) throws RuntimeException {
+		try {
+			em.persist(o);
+			em.flush();
+		} catch (PersistenceException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 	
 	@Override
 	public Object merge(Object o) throws RuntimeException {
@@ -68,6 +79,21 @@ public class SentinelaDaoImpl implements SentinelaDao{
 			Query q = em.createQuery("FROM Grupo g WHERE g.identificadorUnico = :idU");
 			q.setParameter("idU", identificadorUnico);
 			return (Grupo) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} catch (NonUniqueResultException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		} catch (QueryTimeoutException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public Pagina findPagina(String identificadorUnico) throws RuntimeException {
+		try {
+			Query q = em.createQuery("FROM Pagina p WHERE p.identificadorUnico = :idU");
+			q.setParameter("idU", identificadorUnico);
+			return (Pagina) q.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		} catch (NonUniqueResultException e) {
