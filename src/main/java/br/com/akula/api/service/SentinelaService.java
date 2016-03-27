@@ -166,6 +166,13 @@ public interface SentinelaService {
 	public String usuarioPaginaPadrao() throws RuntimeException;
 	
 	/**
+	 * Atualiza a pagina padrao do {@link Usuario} logado no contexto
+	 * @param novaPagina A identificacao unica da pagina
+	 * @throws RuntimeException ...
+	 */
+	public void atualizaUsuarioPaginaPadrao(String novaPagina) throws RuntimeException;
+	
+	/**
 	 * Verifica se o {@link Usuario} precisa alterar a senha. Normalmente acontece quando uma nova 
 	 * senha &eacute; gerada pelo sistema
 	 * 

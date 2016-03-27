@@ -239,6 +239,16 @@ public class SentinelaServiceImpl implements SentinelaService {
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
+	public void atualizaUsuarioPaginaPadrao(String novaPagina) throws RuntimeException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Map<UserDetails, Object> userDet = (Map<UserDetails, Object>) auth.getDetails();
+		Pagina pag = sentinelaDao.findPagina(novaPagina);
+		userDet.remove(UserDetails.PAGINA_PADRAO);
+		userDet.put(UserDetails.PAGINA_PADRAO, pag.getURL());
+	}
+	
+	@Override
 	public boolean necessitaAlterarSenha() throws RuntimeException {
 		Usuario user = sentinelaDao.find(UsuarioImpl.class, usuarioLogadoId());
 		return user.getSenhaAlterada();
