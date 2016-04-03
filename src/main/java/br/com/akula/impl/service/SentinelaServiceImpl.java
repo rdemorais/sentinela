@@ -6,11 +6,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.akula.api.ca.NavBarItem;
@@ -37,6 +41,13 @@ public class SentinelaServiceImpl implements SentinelaService {
 	private SentinelaDao sentinelaDao;
 	
 	private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+	
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws RuntimeException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	}
 	
 	@Override
 	@Transactional

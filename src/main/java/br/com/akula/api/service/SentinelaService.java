@@ -3,6 +3,9 @@ package br.com.akula.api.service;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import br.com.akula.api.ca.NavBarItem;
 import br.com.akula.api.model.EscopoPermissao;
 import br.com.akula.api.model.Grupo;
@@ -33,6 +36,14 @@ import br.com.akula.impl.model.AbstractEntityPermissao;
  */
 public interface SentinelaService {
 	
+	
+	/**
+	 * Realiza o logout de um {@link Usuario}
+	 * @param request HttpServletRequest
+	 * @param response HttpServletResponse
+	 * @throws RuntimeException ...
+	 */
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws RuntimeException;
 	
 	/**
 	 * Cria um novo {@link Usuario} 
