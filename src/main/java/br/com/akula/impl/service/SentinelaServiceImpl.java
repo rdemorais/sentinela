@@ -51,6 +51,14 @@ public class SentinelaServiceImpl implements SentinelaService {
 	
 	@Override
 	@Transactional
+	public boolean usuarioExiste(String login) throws RuntimeException {
+		Usuario user = sentinelaDao.findUsuario(login);
+		
+		return user != null ? true : false;
+	}
+	
+	@Override
+	@Transactional
 	public Usuario createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException {
 		Usuario user = new UsuarioImpl();
 		

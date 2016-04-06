@@ -46,6 +46,14 @@ public interface SentinelaService {
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws RuntimeException;
 	
 	/**
+	 * Verifica se o {@link Usuario} existe a partir do login
+	 * @param login o login que se deseja verificar
+	 * @return true se o {@link Usuario} existir
+	 * @throws RuntimeException ...
+	 */
+	public boolean usuarioExiste(String login) throws RuntimeException;
+	
+	/**
 	 * Cria um novo {@link Usuario} 
 	 * 
 	 * @param login o login. Recomenda-se usar o email
