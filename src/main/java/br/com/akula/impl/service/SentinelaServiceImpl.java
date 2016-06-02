@@ -282,6 +282,11 @@ public class SentinelaServiceImpl implements SentinelaService {
 	}
 	
 	@Override
+	public Usuario usuarioLogado() throws RuntimeException {
+		return sentinelaDao.find(UsuarioImpl.class, usuarioLogadoId());
+	}
+	
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<NavBarItem> usuarioNavBar() throws RuntimeException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

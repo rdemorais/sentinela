@@ -209,6 +209,14 @@ public interface SentinelaService {
 	public Serializable usuarioLogadoId() throws RuntimeException;
 	
 	/**
+	 * Retorna o {@link Usuario} logado
+	 * 
+	 * @return o {@link Usuario}
+	 * @throws RuntimeException se algo der errado...
+	 */
+	public Usuario usuarioLogado() throws RuntimeException;
+	
+	/**
 	 * Retorna a lista de {@link NavBarItem} do {@link Usuario} logado
 	 * @return a lista {@link NavBarItem}
 	 * @throws RuntimeException ...
