@@ -12,6 +12,7 @@
 	<context:annotation-config />
 
 	<bean id="sentinelaService" class="br.com.akula.impl.service.SentinelaServiceImpl"/>
+	<bean id="oauth2SentinelaService" class="br.com.akula.impl.service.OAuth2SentinelaServiceImpl"/>
 	<bean id="sentinelaDao" class="br.com.akula.impl.dao.SentinelaDaoImpl" />
 	<bean id="sentinelaAuditoria" class="br.com.akula.impl.auditoria.SentinelaAuditoriaEventPublisherImpl"/>
 </beans>

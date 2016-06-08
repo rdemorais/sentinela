@@ -11,10 +11,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import br.com.akula.api.ca.UserDetails;
 import br.com.akula.api.dao.SentinelaDao;
 import br.com.akula.api.model.Permissao;
 import br.com.akula.api.model.Usuario;
@@ -52,6 +52,8 @@ public class SentinelaAuthenticationProvider implements AuthenticationProvider{
 				autenticacao.setName(user.getLogin());
 				autenticacao.setAuthenticated(true);
 				autenticacao.addPermissao(new PermissaoConcedida("ROLE_AUTENTICADO"));
+				
+				userDet.put(UserDetails.ID_USER, user.getId());
 				
 				autenticacao.setDetails(userDet);
 				
