@@ -55,6 +55,31 @@ public abstract class AbstractSentinelaService implements SentinelaService{
 	
 	@Override
 	@Transactional
+	public Usuario createUsuarioAutoRegistro(String login, String senha, String grupo) throws RuntimeException {
+		Usuario user = new UsuarioImpl();
+		
+		Grupo g = sentinelaDao.findGrupo(grupo);
+		
+		user.setAtivo(Boolean.TRUE);
+		user.setAutoRegistro(Boolean.TRUE);
+		user.setLogin(login);
+		user.setSenhaAlterada(Boolean.FALSE);
+		user.setSenha(encoder.encode(login + senha));
+		user.setPaginaPadrao(null);
+		
+		sentinelaDao.create(user);
+		
+		UsuarioGrupo userGrupo = new UsuarioGrupoImpl();
+		userGrupo.setUsuario(user);
+		userGrupo.setGrupo(g);
+		
+		sentinelaDao.create(userGrupo);
+		
+		return user;
+	}
+	
+	@Override
+	@Transactional
 	public Usuario createUsuarioAutoRegistro(String login, String senha, String grupo, String pagina) throws RuntimeException {
 		Usuario user = new UsuarioImpl();
 		

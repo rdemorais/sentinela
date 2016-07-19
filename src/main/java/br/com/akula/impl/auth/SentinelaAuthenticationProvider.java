@@ -43,10 +43,12 @@ public class SentinelaAuthenticationProvider implements AuthenticationProvider{
 			String login = String.valueOf(auth.getPrincipal());
 			String senha = String.valueOf(auth.getCredentials());
 			
+			String loginSenha = login + senha;
+			
 			logger.debug("Capturando dados do usuario na base de dados ["+login+"]");
 			Usuario user = sentinelaDao.findUsuario(login);
 			
-			if(user != null && encoder.matches(senha, user.getSenha())) {
+			if(user != null && encoder.matches(loginSenha, user.getSenha())) {
 				Map<UserDetails, Object> userDet = new HashMap<UserDetails, Object>();
 				Autenticacao autenticacao = new Autenticacao();
 				autenticacao.setName(user.getLogin());

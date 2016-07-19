@@ -59,6 +59,16 @@ public interface SentinelaService {
 	 * @param login o login. Recomenda-se usar o email
 	 * @param senha a senha
 	 * @param grupo O {@link Grupo} de acesso. Identificador unico
+	 * @throws RuntimeException ...
+	 */
+	public Usuario createUsuarioAutoRegistro(String login, String senha, String grupo) throws RuntimeException;
+	
+	/**
+	 * Cria um novo {@link Usuario} 
+	 * 
+	 * @param login o login. Recomenda-se usar o email
+	 * @param senha a senha
+	 * @param grupo O {@link Grupo} de acesso. Identificador unico
 	 * @param pagina A {@link Pagina}. Identificador unico
 	 * @throws RuntimeException ...
 	 */
