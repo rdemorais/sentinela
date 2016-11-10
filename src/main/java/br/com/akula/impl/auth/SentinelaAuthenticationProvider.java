@@ -49,20 +49,17 @@ public class SentinelaAuthenticationProvider implements AuthenticationProvider{
 			Usuario user = sentinelaDao.findUsuario(login);
 			
 			if(user != null && encoder.matches(loginSenha, user.getSenha())) {
-				Map<UserDetails, Object> userDet = new HashMap<UserDetails, Object>();
-				Autenticacao autenticacao = new Autenticacao();
-				autenticacao.setName(user.getLogin());
-				autenticacao.setAuthenticated(true);
-				autenticacao.addPermissao(new PermissaoConcedida("ROLE_AUTENTICADO"));
-				
-				userDet.put(UserDetails.ID_USER, user.getId());
-				
-				autenticacao.setDetails(userDet);
-				
-				logger.debug("Autenticacao ok para usuario ["+user.getLogin()+"]");
-				return autenticacao;
+				return configAuth(user);
 			}else {
-				logger.debug("Autenticacao falhou");
+				Long idFacebook = Long.valueOf(String.valueOf(auth.getPrincipal()));
+				
+				logger.debug("Autenticacao user/pass falhou. Tentando encontrar pelo idFacebook [" + idFacebook + "]");
+				
+				user = sentinelaDao.findUsuarioByIDFacebook(idFacebook);
+				
+				if(user != null) {
+					return configAuth(user);
+				}
 				
 				throw new BadCredentialsException("Autenticacao falhou. Usuario ou senha nao validados");
 			}
@@ -70,6 +67,21 @@ public class SentinelaAuthenticationProvider implements AuthenticationProvider{
 			logger.error(e.getMessage(), e);
 			return null;
 		}
+	}
+	
+	private Autenticacao configAuth(Usuario user) {
+		Map<UserDetails, Object> userDet = new HashMap<UserDetails, Object>();
+		Autenticacao autenticacao = new Autenticacao();
+		autenticacao.setName(user.getLogin());
+		autenticacao.setAuthenticated(true);
+		autenticacao.addPermissao(new PermissaoConcedida("ROLE_AUTENTICADO"));
+		
+		userDet.put(UserDetails.ID_USER, user.getId());
+		
+		autenticacao.setDetails(userDet);
+		
+		logger.debug("Autenticacao ok para usuario ["+user.getLogin()+"]");
+		return autenticacao;
 	}
 
 	@Override

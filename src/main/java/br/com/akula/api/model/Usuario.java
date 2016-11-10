@@ -12,6 +12,8 @@ import java.util.Collection;
 public interface Usuario extends Serializable{
 	public Long getId();
 	public void setId(Long id);
+	public Long getIdFacebook();
+	public void setIdFacebook(Long idFacebook);
 	public String getLogin();
 	public void setLogin(String login);
 	public String getSenha();

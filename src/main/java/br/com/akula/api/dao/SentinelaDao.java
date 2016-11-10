@@ -18,6 +18,7 @@ public interface SentinelaDao {
 	public Pagina findPagina(String identificadorUnico) throws RuntimeException;
 	public <T> T findEntityPermissao(String entityName, Grupo g, Permissao perm) throws RuntimeException;
 	public <T> T findEntityPermissao(String entityName, Usuario u, Permissao perm) throws RuntimeException;
+	public Usuario findUsuarioByIDFacebook(Long idFacebook) throws RuntimeException;
 	public Usuario findUsuario(String login) throws RuntimeException;
 	public List<Permissao> listPermissaoUsuario(Serializable id) throws RuntimeException;
 	public List<Pagina> listPaginas(Serializable idUser, Pagina paginaPai, boolean paginaPadrao) throws RuntimeException;

@@ -53,6 +53,17 @@ public interface SentinelaService {
 	 */
 	public boolean usuarioExiste(String login) throws RuntimeException;
 	
+	
+	/**
+	 * Cria um novo {@link Usuario} 
+	 * 
+	 * @param login o login. Recomenda-se usar o email
+	 * @param idFacebook
+	 * @param grupo O {@link Grupo} de acesso. Identificador unico
+	 * @throws RuntimeException ...
+	 */
+	public Usuario createUsuarioAutoRegistro(String login, Long idFacebook, String grupo) throws RuntimeException;
+	
 	/**
 	 * Cria um novo {@link Usuario} 
 	 * 

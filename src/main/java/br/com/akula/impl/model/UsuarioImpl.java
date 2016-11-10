@@ -30,6 +30,9 @@ public class UsuarioImpl implements Usuario{
 	@Column(name="co_usuario")
 	private Long id;
 	
+	@Column(name="nm_id_facebook", unique=true, nullable=true)
+	private Long idFacebook;
+	
 	@Column(name="ds_login", unique=true, nullable=false)
 	private String login;
 	
@@ -61,6 +64,14 @@ public class UsuarioImpl implements Usuario{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Long getIdFacebook() {
+		return idFacebook;
+	}
+
+	public void setIdFacebook(Long idFacebook) {
+		this.idFacebook = idFacebook;
 	}
 
 	public String getLogin() {
